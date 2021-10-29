@@ -4,7 +4,7 @@ def gcd_without_recursion(a, b):
             a %= b
         else:
             b %= a
-    return a or b
+    return a if a != 0 else b
 
 a = int(input())
 b = int(input())

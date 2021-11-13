@@ -21,7 +21,7 @@ def bin_search_recursion(l, x):
             if next_iter_result == -1:
                 return -1
             else:
-                return bin_search_recursion(l[mid+1:], x) + mid + 1
+                return next_iter_result + mid + 1
 
 
 # Task 2

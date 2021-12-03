@@ -88,5 +88,5 @@ class C_numb:
     def __str__(self):
         return "(%g, %gi)"%(self.real,self.im)
 
-print(C_numb(1, 2).root(3))
-print(C_numb(1, 2) * C_numb(3, 4))
+print(C_numb(1, 2) ** 10)
+print(*C_numb(1, 2).root(3), sep="; ")

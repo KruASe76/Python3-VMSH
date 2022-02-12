@@ -163,7 +163,7 @@ transp_row_size = ceil( (24*img.cols)/32 )*4 #посчитали размер с
 true_size = 54 + transp_row_size*img.rows #полный размер нового изображения в байтах
 
 #в массив байт, который будет записан в новый файл, записываются 54 байта информации о новом изображении (важно, что это самые первые 54 байта)
-data_transp = bytearray(bmp_info[0]+bmp_info[1] + true_size.to_bytes(4,'little') + bmp_info[3].to_bytes(2,'little')+ bmp_info[4].to_bytes(2,'little') + bmp_data_offset.to_bytes(4,'little')+bmp_info[6].to_bytes(4,'little') + bmp_info[8].to_bytes(4,'little')+ bmp_info[7].to_bytes(4,'little')+bmp_info[9].to_bytes(2,'little')+bmp_info[10].to_bytes(2,'little')+bmp_info[11].to_bytes(4,'little')+(true_size - 54).to_bytes(4,'little')+bmp_info[13].to_bytes(4,'little') + bmp_info[14].to_bytes(4,'little')+bmp_info[15].to_bytes(4,'little')+bmp_info[16].to_bytes(4,'little')) + bytearray(true_size-54)
+data_transp = bytearray(bmp_info[0]+bmp_info[1] + true_size.to_bytes(4,'little') + bmp_info[3].to_bytes(2,'little')+ bmp_info[4].to_bytes(2,'little') + bmp_data_offset.to_bytes(4,'little')+bmp_info[6].to_bytes(4,'little') + bmp_info[8].to_bytes(4,'little')+ bmp_info[7].to_bytes(4,'little')+bmp_info[9].to_bytes(2,'little')+bmp_info[10].to_bytes(2,'little')+bmp_info[11].to_bytes(4,'little')+(true_size - 54).to_bytes(4,'little')+bmp_info[13].to_bytes(4,'little') + bmp_info[14].to_bytes(4,'little')+bmp_info[15].to_bytes(4,'little')+bmp_info[16].to_bytes(4,'little'))
 
 bitmap_data = []
 for row in img.matr:
@@ -180,4 +180,4 @@ for row in img.matr:
 f.write(data_transp + bytearray(bitmap_data))
 f.close()
 
-# Не робит короче
+# Теперь все робит короче

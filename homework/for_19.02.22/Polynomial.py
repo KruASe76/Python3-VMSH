@@ -42,8 +42,8 @@ class Multicock(): # Не бейте за шутку пж
         self.coeffs = coeffs
         self.max_degree = len(self.coeffs) - 1
     
-    def __str__(self): # однострочный челлендж комплит
-        return " + ".join(filter(lambda elem: elem, map(lambda coeff, ind: f"{coeff if abs(coeff) != 1 or ind == 0 else str(coeff)[:-1]}{to_superscript(ind)}" if coeff else "", self.coeffs, range(self.max_degree, -1, -1)))).replace("+ -", "- ") if self.coeffs else "0"
+    def __str__(self): # однострочный челлендж комплит :) удачи разобраться.. вроде тут несложно
+        return " + ".join(filter(lambda elem: elem, map(lambda coeff, deg: f"{coeff if abs(coeff) != 1 or deg == 0 else str(coeff)[:-1]}{to_superscript(deg)}" if coeff else "", self.coeffs, range(self.max_degree, -1, -1)))).replace("+ -", "- ") if self.coeffs else "0"
     
     def __add__(self, other):
         if not isinstance(other, Multicock):
@@ -95,7 +95,7 @@ class Multicock(): # Не бейте за шутку пж
         return Multicock(res), temp_divisible
     
     def diff(self):
-        return Multicock(map(lambda coeff, ind: coeff * ind, self.coeffs[:-1], range(self.max_degree, 0, -1)))
+        return Multicock(map(lambda coeff, deg: coeff * deg, self.coeffs[:-1], range(self.max_degree, 0, -1)))
 
 
 

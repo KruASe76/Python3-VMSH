@@ -44,7 +44,10 @@ class Multicock(): # Не бейте за шутку пж
     
     def __str__(self): # однострочный челлендж комплит :) удачи разобраться.. вроде тут несложно
         return " + ".join(filter(lambda elem: elem, map(lambda coeff, deg: f"{coeff if abs(coeff) != 1 or deg == 0 else str(coeff)[:-1]}{to_superscript(deg)}" if coeff else "", self.coeffs, range(self.max_degree, -1, -1)))).replace("+ -", "- ") if self.coeffs else "0"
-    
+
+    def __neg__(self):
+        return Multicock(map(lambda coeff: -coeff, self.coeffs))
+
     def __add__(self, other):
         if not isinstance(other, Multicock):
             other = Multicock(other)
@@ -61,11 +64,17 @@ class Multicock(): # Не бейте за шутку пж
 
         return Multicock(map(lambda a, b: a + b, self_coeffs, other_coeffs))
     
+    def __radd__(self, other):
+        return self + other
+    
     def __sub__(self, other):
         if not isinstance(other, Multicock):
             other = Multicock(other)
         
-        return self + Multicock(map(lambda coeff: -coeff, other.coeffs))
+        return self + (-other)
+
+    def __rsub__(self, other):
+        return -(self - other)
 
     def __mul__(self, other):
         if isinstance(other, int) or isinstance(other, float):
@@ -74,7 +83,10 @@ class Multicock(): # Не бейте за шутку пж
         if not isinstance(other, Multicock):
             other = Multicock(other)
         
-        return custom_sum(map(lambda coeff: Multicock((other * coeff).coeffs + [0] * (self.max_degree - self.coeffs.index(coeff))), self.coeffs))
+        return custom_sum(map(lambda coeff: (other * coeff) ** (self.max_degree - self.coeffs.index(coeff)), self.coeffs))
+    
+    def __rmul__(self, other):
+        return self * other
 
     def __truediv__(self, other):
         if isinstance(other, int) or isinstance(other, float):
@@ -87,14 +99,26 @@ class Multicock(): # Не бейте за шутку пж
         res = []
         while temp_divisible.max_degree >= other.max_degree:
             multiplier = temp_divisible.coeffs[0] / other.coeffs[0]
-            temp_divisible = temp_divisible - Multicock(other.coeffs + [0] * (temp_divisible.max_degree - other.max_degree)) * multiplier
+            temp_divisible = temp_divisible - (other ** (temp_divisible.max_degree - other.max_degree)) * multiplier
             res.append(multiplier)
             temp_divisible.coeffs.pop(0)
             temp_divisible.max_degree -= 1
         
         return Multicock(res), temp_divisible
     
-    def diff(self):
+    def __floordiv__(self, other):
+        return (self / other)[0]
+    
+    def __mod__(self, other):
+        return (self /other)[1]
+    
+    def __pow__(self, other): # Повышение степени каждого cock
+        if not isinstance(other, int):
+            raise TypeError("Able to raise Multicock only to an integer power")
+        
+        return Multicock(self.coeffs + [0] * other)
+    
+    def deriv(self):
         return Multicock(map(lambda coeff, deg: coeff * deg, self.coeffs[:-1], range(self.max_degree, 0, -1)))
 
 
@@ -110,6 +134,7 @@ if __name__ == "__main__":
     mc2 = Multicock(1, -2, 3, -4, 5)
     print(mc1 + mc2)
     print(mc2 - mc1)
+    print(5 * mc2)
     print()
 
     mc3 = Multicock(5, 15, 23, -8)
@@ -126,4 +151,5 @@ if __name__ == "__main__":
     print(*(mc6 / mc7), sep="; ") # и открыть картинки (для отладки промежуточных результатов)
     print()
 
-    print(mc2.diff())
+    print(mc2.deriv())
+    print(mc1 ** 3)

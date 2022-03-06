@@ -2,9 +2,6 @@
 class Polynom:
     def __init__(self,coefs=None):
         self.coefs = coefs or [0] #by default [const,x,x^2,...,x^n]
-    
-    def __neg__(self):
-        return Polynom(list(map(lambda coef: -coef, self.coefs)))
 
     def __add__(self, poly):
         res = Polynom(list(map(lambda x,y:x+y,self.coefs, poly.coefs))) #сначала сложили коэффициенты до самого старшего у многочлена наименьшей степени
@@ -187,9 +184,10 @@ def RootTop(polynom):
     return 1 + b**(1/m)
 
 def RootBottom(polynom):
-    return -RootTop(-polynom)
+    return -RootTop(Polynom(list(map(lambda coef, ind: -coef if (len(polynom.coefs) - ind - 1) % 2 == 0 else coef, polynom.coefs, range(len(polynom.coefs))))))
 
 print(RootTop(Polynom((3, -2, 1, 1))))
+print(RootBottom(Polynom((3, -2, 1, 1))))
 # по идее: первый и единственный отрицательный коэф - это -2, стоит на 2 месте
 # зачит, 1 + √2, все верно
-# только нормального онлайн-кальулятора я так и не нашел, чтоб проверить...
+# только нормального онлайн-калькулятора я так и не нашел, чтоб проверить...

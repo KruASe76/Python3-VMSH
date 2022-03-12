@@ -1,6 +1,3 @@
-from audioop import mul
-from re import M
-
 def custom_sum(iter):
     iter = tuple(iter)
     res = iter[0]
